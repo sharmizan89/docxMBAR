@@ -12,7 +12,7 @@ const para = new Paragraph({
 const name = new TextRun({
     text: "Name:",
     bold: true,
-    font: "Calibri",
+    font: "Arial",
     allCaps: true,
 });
 ```
@@ -70,7 +70,7 @@ This is the type of formatting that your uncle uses when he types out documents:
 const name = new TextRun({
     text: "Name:",
     bold: true,
-    font: "Calibri",
+    font: "Arial",
     allCaps: true,
 });
 ```

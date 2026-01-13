@@ -71,24 +71,20 @@ const doc = new Document({
         default: {
             heading1: {
                 run: {
-                    font: "Calibri",
-                    size: 52,
-                    bold: true,
+                    font: "Arial",
+                    size: 40,
+                    bold: false,
                     color: "000000",
-                    underline: {
-                        type: UnderlineType.SINGLE,
-                        color: "000000",
-                    },
                 },
                 paragraph: {
-                    alignment: AlignmentType.CENTER,
+                    alignment: AlignmentType.LEFT,
                     spacing: { line: 340 },
                 },
             },
             heading2: {
                 run: {
-                    font: "Calibri",
-                    size: 26,
+                    font: "Arial",
+                    size: 28,
                     bold: true,
                 },
                 paragraph: {
@@ -97,8 +93,8 @@ const doc = new Document({
             },
             heading3: {
                 run: {
-                    font: "Calibri",
-                    size: 26,
+                    font: "Arial",
+                    size: 24,
                     bold: true,
                 },
                 paragraph: {
@@ -107,12 +103,22 @@ const doc = new Document({
             },
             heading4: {
                 run: {
-                    font: "Calibri",
-                    size: 26,
+                    font: "Arial",
+                    size: 22,
                     bold: true,
                 },
                 paragraph: {
-                    alignment: AlignmentType.JUSTIFIED,
+                    alignment: AlignmentType.LEFT,
+                },
+            },
+            heading5: {
+                run: {
+                    font: "Arial",
+                    size: 18,
+                    bold: true,
+                },
+                paragraph: {
+                    alignment: AlignmentType.LEFT,
                 },
             },
         },
@@ -124,9 +130,9 @@ const doc = new Document({
                 next: "Normal",
                 quickFormat: true,
                 run: {
-                    font: "Calibri",
-                    size: 26,
-                    bold: true,
+                    font: "Arial",
+                    size: 20,
+                    bold: false,
                 },
                 paragraph: {
                     spacing: { line: 276, before: 20 * 72 * 0.1, after: 20 * 72 * 0.05 },
@@ -141,7 +147,7 @@ const doc = new Document({
                 next: "Normal",
                 quickFormat: true,
                 run: {
-                    font: "Calibri",
+                    font: "Arial",
                     size: 26,
                 },
                 paragraph: {
@@ -178,8 +184,8 @@ const doc = new Document({
                 next: "Normal",
                 quickFormat: true,
                 run: {
-                    font: "Calibri",
-                    size: 26,
+                    font: "Arial",
+                    size: 20,
                     bold: true,
                 },
                 paragraph: {

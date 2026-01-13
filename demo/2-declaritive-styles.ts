@@ -33,7 +33,7 @@ const doc = new Document({
                 },
                 paragraph: {
                     spacing: {
-                        before: 240,
+                        before: 0,
                         after: 120,
                     },
                 },
@@ -45,8 +45,8 @@ const doc = new Document({
             },
             document: {
                 run: {
-                    size: "11pt",
-                    font: "Calibri",
+                    size: "10pt",
+                    font: "Arial",
                 },
                 paragraph: {
                     alignment: AlignmentType.RIGHT,
