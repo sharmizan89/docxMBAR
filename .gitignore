@@ -55,6 +55,8 @@ yarn.lock
 
 # Documents
 My Document.docx
+*.docx
+*-extracted/
 
 # Temporary folder
 tmp
