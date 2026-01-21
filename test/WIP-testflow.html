@@ -1,0 +1,1213 @@
+@flow
+step_flowbuild_info:data
+/// This Spark Is Created With Flow Auto Builder V1.0
+/// Do Not Delete This Step, This Is Important.
+----
+step_generate_html_interface:data
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&P Global Document Generator</title>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #000000;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 32px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #DC2626 100%);
+            border-radius: 16px;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E5E7EB;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #FFFFFF;
+            transition: border-color 0.2s ease;
+            outline: none;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #1E3A8A;
+        }
+        
+        .form-group textarea {
+            min-height: 300px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 52px;
+        }
+        
+        .btn-primary {
+            background: #1E3A8A;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1E40AF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #FFFFFF;
+            color: #1E3A8A;
+            border: 2px solid #E5E7EB;
+        }
+        
+        .btn-secondary:hover {
+            background: #F9FAFB;
+            border-color: #1E3A8A;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            color: #6B7280;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #E5E7EB;
+            border-top: 2px solid #1E3A8A;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .preview-section {
+            margin-top: 32px;
+        }
+        
+        .preview-content {
+            background: #FFFFFF;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.5;
+        }
+        
+        .success-message {
+            background: #10B981;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .error-message {
+            background: #EF4444;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+            display: none;
+        }
+        
+        .info-box {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: #1E40AF;
+        }
+        
+        .content-help {
+            font-size: 0.9em;
+            color: #6B7280;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 S&P Global Document Generator</h1>
+            <p>Create professional documents with S&P Global branding and compliance</p>
+        </div>
+        
+        <div class="info-box">
+            <strong>📋 Document Structure:</strong> All documents will include the S&P Global logo, professional formatting matching corporate standards, and the required disclaimer section.
+        </div>
+        
+        <div class="card">
+            <form id="documentForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="documentTitle">Document Title</label>
+                        <input type="text" id="documentTitle" placeholder="Report title" value="Market Analysis Report">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="documentSubtitle">Document Subtitle (Optional)</label>
+                        <input type="text" id="documentSubtitle" placeholder="New subtitle" value="Q4 2025 Financial Outlook">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reportType">Report Type (Optional)</label>
+                        <input type="text" id="reportType" placeholder="e.g., Market Research, Financial Analysis" value="">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="authorName">Author Name</label>
+                        <input type="text" id="authorName" placeholder="Author, Title, Email, Phone" value="${user_first_name} ${user_last_name}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="documentDate">Document Date</label>
+                        <input type="date" id="documentDate" value="">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="documentContent">Document Content</label>
+                    <textarea id="documentContent" placeholder="Enter your document content using the format below...">## Executive Summary
+
+This report provides a comprehensive analysis of market conditions and financial outlook for the fourth quarter of 2025.
+
+### Key Findings
+
+The analysis reveals several critical trends:
+
+‒ Market volatility has increased by 15% compared to the previous quarter
+‒ Technology sector shows strong growth potential
+‒ Regulatory changes are expected to impact financial services
+
+### Market Overview
+
+The current market environment presents both opportunities and challenges for investors.
+
+#### Regional Analysis
+
+**North America**
+Market conditions in North America remain stable with moderate growth projections.
+
+**Europe**
+European markets are experiencing increased volatility due to regulatory changes.
+
+**Asia-Pacific**
+Strong growth momentum continues in the Asia-Pacific region.
+
+### Investment Recommendations
+
+Based on our analysis, we recommend:
+
+1. Diversification across sectors
+2. Focus on technology and healthcare
+3. Monitor regulatory developments
+
+### Risk Assessment
+
+Key risks to monitor include:
+
+• Geopolitical tensions
+• Interest rate fluctuations  
+• Supply chain disruptions
+
+## Conclusion
+
+The market outlook for Q4 2025 suggests cautious optimism with selective investment opportunities.</textarea>
+                    <div class="content-help">
+                        <strong>Formatting Guide:</strong><br>
+                        • Use ## for main headings<br>
+                        • Use ### for subheadings<br>
+                        • Use #### for sub-subheadings<br>
+                        • Use **text** for bold<br>
+                        • Use ‒ for bullet points<br>
+                        • Use 1. 2. 3. for numbered lists
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button type="button" class="btn btn-primary" id="generateBtn">
+                        📄 Generate Word Document
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="previewBtn">
+                        👁️ Preview Content
+                    </button>
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <span>Generating document...</span>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                ✅ Document generated successfully with S&P Global branding!
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                ❌ Error generating document. Please try again.
+            </div>
+        </div>
+        
+        <div class="card preview-section">
+            <h3>📋 Document Preview</h3>
+            <div class="preview-content" id="previewContent">
+                <p><em>Click "Preview Content" to see how your document will look...</em></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            document.getElementById('documentDate').value = new Date().toISOString().split('T')[0];
+            
+            const generateBtn = document.getElementById('generateBtn');
+            const previewBtn = document.getElementById('previewBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const previewContent = document.getElementById('previewContent');
+            
+            // S&P Global logo as base64 (simplified version - in production, use actual logo)
+            const spGlobalLogo = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMUUzQThBIi8+Cjx0ZXh0IHg9IjUwIiB5PSIyNSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlMmUCBHbG9iYWw8L3RleHQ+Cjwvc3ZnPgo=';
+            
+            // Preview functionality
+            previewBtn.addEventListener('click', function() {
+                const reportType = document.getElementById('reportType').value;
+                const title = document.getElementById('documentTitle').value;
+                const subtitle = document.getElementById('documentSubtitle').value;
+                const author = document.getElementById('authorName').value;
+                const date = document.getElementById('documentDate').value;
+                const content = document.getElementById('documentContent').value;
+                
+                // Convert markdown-like content to HTML for preview
+                let htmlContent = content
+                    .replace(/## (.*$)/gm, '<h2 style="color: #000000; font-size: 18px; font-weight: bold; margin: 24px 0 12px 0;">$1</h2>')
+                    .replace(/### (.*$)/gm, '<h3 style="color: #000000; font-size: 16px; font-weight: bold; margin: 20px 0 10px 0;">$1</h3>')
+                    .replace(/#### (.*$)/gm, '<h4 style="color: #000000; font-size: 14px; font-weight: bold; margin: 16px 0 8px 0;">$1</h4>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/^• (.*$)/gm, '<li style="margin: 4px 0;">$1</li>')
+                    .replace(/^(\d+)\. (.*$)/gm, '<li style="margin: 4px 0; list-style-type: decimal;">$1. $2</li>')
+                    .replace(/\n\n/g, '</p><p style="margin: 12px 0; line-height: 1.5;">')
+                    .replace(/\n/g, '<br>');
+                
+                const previewHTML = `
+                    <div style="display: flex; align-items: center; margin-bottom: 32px;">
+                        <img src="https://snp-mediaportal.qbank.se/assets/deployedFiles/0dd5f7539ef187524017cfb9facbb79c.png" alt="S&P Global" style="height: 40px; margin-right: 16px;">
+                        <div>
+                            <div style="font-size: 12px; color: #6B7280;">S&P Global</div>
+                        </div>
+                    </div>
+                    <div style="text-align: left; margin-bottom: 40px;">
+                        ${reportType ? '<p style="color: #D6002A; font-size: 14px; font-weight: bold; margin-bottom: 22px; font-family: Arial, sans-serif; text-align: right;">' + reportType + '</p>' : ''}
+                        <h1 style="color: #000000; font-size: 24px; font-weight: bold; margin-bottom: 8px; font-family: Arial, sans-serif;"></h1>
+                        <h2 style="color: #D6002A; font-size: 18px; font-weight: normal; margin-bottom: 16px; font-family: Arial, sans-serif;"></h2>
+                        <p style="color: #000000; font-size: 14px; margin-bottom: 8px;"></p>
+                        <p style="color: #000000; font-size: 12px;">${new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <hr style="margin: 24px 0; border: 1px solid #E5E7EB;">
+                    </div>
+                    <div style="font-family: 'Arial', sans-serif; line-height: 1.5; color: #000000;">
+                        <p style="margin: 12px 0; line-height: 1.5;"></p>
+                    </div>
+                    <div style="margin-top: 48px; padding-top: 24px; border-top: 2px solid #E5E7EB; font-size: 11px; color: #6B7280; line-height: 1.4;">
+                        <strong>Disclaimer:</strong> This document contains proprietary and confidential information of S&P Global Inc. and its affiliates. All rights reserved. The content is provided "as is" without warranties of any kind and should not be used for unauthorized purposes.
+                    </div>
+                `;
+                
+                previewContent.innerHTML = previewHTML;
+            });
+            
+            // Generate document functionality
+            generateBtn.addEventListener('click', async function() {
+                try {
+                    // Show loading state
+                    loadingIndicator.style.display = 'flex';
+                    generateBtn.disabled = true;
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
+                    
+                    // Get form values
+                    const reportType = document.getElementById('reportType').value;
+                    const title = document.getElementById('documentTitle').value || 'Untitled Document';
+                    const subtitle = document.getElementById('documentSubtitle').value;
+                    const author = document.getElementById('authorName').value || 'S&P Global';
+                    const date = document.getElementById('documentDate').value;
+                    const content = document.getElementById('documentContent').value || 'No content provided.';
+                    
+                    // Parse content and create document elements
+                    const documentElements = parseContentToElements(content);
+                    
+                    // Create document using docx library with S&P Global styling
+                    const doc = new docx.Document({
+                        creator: author,
+                        title: title,
+                        description: "S&P Global Document",
+                        styles: {
+                            paragraphStyles: [
+                                    {
+                                    id: "reportType",
+                                    name: "reportType",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 28, // 14pt
+                                        bold: true,
+                                        color: "D6002A",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        alignment: docx.AlignmentType.RIGHT,
+                                        spacing: {
+                                            before: 0, // default
+                                            after: 900, // 45pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "title",
+                                    name: "Title",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 96, // 48pt
+                                        bold: false,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        alignment: docx.AlignmentType.LEFT,
+                                        spacing: {
+                                            line: 259, // 1.08pt
+                                            before: 1320, // 66pt
+                                            after: 160, // 8pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "subtitle",
+                                    name: "Subtitle",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 48, // 24pt
+                                        color: "D6002A",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        alignment: docx.AlignmentType.LEFT,
+                                        spacing: {
+                                            line: 247, // 1.03pt
+                                            before: 0, // default for subtitle
+                                            after: 360, // 18pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "heading1",
+                                    name: "Heading 1",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 40, // 20pt
+                                        bold: false,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            before: 270, // 13.5pt
+                                            after: 360, // 18pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "heading2",
+                                    name: "Heading 2",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 28, // 14pt
+                                        bold: true,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03pt
+                                            before: 180, // 9pt
+                                            after: 120, // 6pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "heading3",
+                                    name: "Heading 3",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 24, // 12pt
+                                        bold: true,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03pt
+                                            before: 180, // 9pt
+                                            after: 120, // 6pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "heading4",
+                                    name: "Heading 4",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 22, // 11pt
+                                        bold: true,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03pt
+                                            before: 180, // 9pt
+                                            after: 120, // 6pt
+                                        },
+                                    },
+                                },
+                             {
+                                    id: "heading5",
+                                    name: "Heading 5",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 18, // 9pt
+                                        bold: true,
+                                        color: "000000",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03pt
+                                            before: 180, // 9pt
+                                            after: 120, // 6pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "body",
+                                    name: "m_body",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 20, // 10pt
+                                        font: "Arial",
+                                        color: "000000"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03 line spacing
+                                            after: 158, // 7.9pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "authorInfo",
+                                    name: "m_author_name",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 20, // 10pt
+                                        bold: true,
+                                        color: "D6002A",
+                                        font: "Arial"
+                                    },
+                                    paragraph: {
+                                        alignment: docx.AlignmentType.LEFT,
+                                        spacing: {
+                                            line: 259, // 1.08 line spacing
+                                            after: 460, // 23pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "date",
+                                    name: "m_date",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 22, // 11pt
+                                        font: "Arial",
+                                        color: "000000"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            after: 220, // 7.9pt
+                                        },
+                                    },
+                                },
+                                {
+                                    id: "disclaimer",
+                                    name: "Copyright text",
+                                    basedOn: "Normal",
+                                    next: "Normal",
+                                    quickFormat: true,
+                                    run: {
+                                        size: 18, // 9pt
+                                        font: "Arial",
+                                        color: "000000"
+                                    },
+                                    paragraph: {
+                                        spacing: {
+                                            line: 247, // 1.03 line spacing
+                                            before: 0,
+                                            after: 240, // 12pt
+                                    },
+                                },
+                            }
+                        ],
+                    },
+                        numbering: {
+                            config: [
+                                {
+                                    reference: "default-numbering",
+                                    levels: [
+                                        {
+                                            level: 0,
+                                            format: docx.LevelFormat.BULLET,
+                                            text: "‒",
+                                            alignment: docx.AlignmentType.LEFT,
+                                            style: {
+                                                paragraph: {
+                                                    indent: { hanging: 360 },
+                                                },
+                                            },
+                                        },
+                                        {
+                                            level: 1,
+                                            format: docx.LevelFormat.BULLET,
+                                            text: "‒",
+                                            alignment: docx.AlignmentType.LEFT,
+                                            style: {
+                                                paragraph: {
+                                                    indent: { left: 360, hanging: 360 },
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                        sections: [
+                            // Main content section
+                            {
+                                properties: {
+                                    page: {
+                                        margin: {
+                                            top: 432, // 0.3 inch
+                                            right: 562, // 0.39 inch
+                                            bottom: 1584, // 1.1 inch
+                                            left: 562, // 0.39 inch
+                                            header: 864,      // 0.6" from top of page to header
+                                            footer: 720,      // 0.5" from bottom of page to footer
+                                            gutter: 0,        // Default gutter margin
+                                        },
+                                        size: {
+                                            width: 11909,  // 8.27 inches in twips (1/20th point)
+                                            height: 15595, // 10.83 inches in twips
+                                        },
+                                    },
+                                    titlePage: true,
+                                },
+                                headers: {
+                                    first: new docx.Header({
+                                        children: [
+                                            // S&P Global logo in header - FIRST PAGE ONLY
+                                            new docx.Paragraph({
+                                                children: [
+                                                    new docx.ImageRun({
+                                                        data: await fetch('https://snp-mediaportal.qbank.se/assets/deployedFiles/09d380bd146b9bc8ab85a934aa69aab0.png')
+                                                            .then(res => res.arrayBuffer()),
+                                                        transformation: {
+                                                            width: 103.68,  // width in pixels
+                                                            height: 40.32,  // height in pixels
+                                                        },
+                                                    }),
+                                                ],
+                                                spacing: {
+                                                    after: 640,
+                                                    before: 0,
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                    default: new docx.Header({
+                                        children: [
+                                            // Empty header for remaining pages
+                                            new docx.Paragraph({
+                                                text: "",
+                                                spacing: {
+                                                    after: 0,
+                                                    before: 0,
+                                                },
+                                            }),
+                                        ],
+                                    }),
+                                },
+                                children: [
+                                    // Report Type (if provided)
+                                    ...(reportType ? [new docx.Paragraph({
+                                        text: reportType,
+                                        style: "reportType",
+                                    })] : []),
+                                    
+                                    // Title
+                                    new docx.Paragraph({
+                                        text: title,
+                                        style: "title",
+                                    }),
+                                    
+                                    // Subtitle (if provided)
+                                    ...(subtitle ? [new docx.Paragraph({
+                                        text: subtitle,
+                                        style: "subtitle",
+                                    })] : []),
+                                    
+                                    // Author and date
+                                    new docx.Paragraph({
+                                        text: `by ${user_first_name} ${user_last_name}`,
+                                        style: "m_author_name",
+                                    }),
+                                    
+                                    new docx.Paragraph({
+                                        text: new Date(date).toLocaleDateString('en-US', { 
+                                            year: 'numeric', 
+                                            month: 'long', 
+                                            day: 'numeric' 
+                                        }),
+                                        style: "m_date",
+                                    }),
+                                    
+                                    // Content elements
+                                    ...documentElements,
+                                ],
+                            },
+                            
+                            // Disclaimer section (separate page)
+                            {
+                                properties: {
+                                    page: {
+                                        margin: {
+                                            top: 720,
+                                            right: 720,
+                                            bottom: 720,
+                                            left: 720,
+                                            header: 720,      // Header margin for disclaimer page
+                                            footer: 720,      // Footer margin for disclaimer page
+                                            gutter: 0,
+                                        },
+                                        size: {
+                                            width: 11909,  // 8.27 inches in twips
+                                            height: 15595, // 10.83 inches in twips
+                                        },
+                                    },
+                                    type: docx.SectionType.NEXT_PAGE,
+                                },
+                                children: [
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "CONTACTS",
+                bold: true,
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+            new docx.TextRun({
+                break: {},
+            }),
+            new docx.TextRun({
+                break: {},
+            }),
+            new docx.TextRun({
+                break: {},
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+    
+    new docx.Paragraph({
+        children: [
+            new docx.ExternalHyperlink({
+                children: [
+                    new docx.TextRun({
+                        text: "www.spglobal.com",
+                        size: 18,
+                        color: "0000FF",
+                        font: "Arial",
+                        underline: {},
+                    }),
+            new docx.TextRun({
+                break: {},
+            }),
+                ],
+                link: "https://www.spglobal.com",
+            })
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.ExternalHyperlink({
+                children: [
+                    new docx.TextRun({
+                        text: "www.spglobal.com/en/enterprise/about/contact-us.html",
+                        size: 18,
+                        color: "0000FF",
+                        font: "Arial",
+                        underline: {},
+                    }),
+                ],
+                link: "https://www.spglobal.com/en/enterprise/about/contact-us.html",
+            })
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "", // Empty paragraph for spacing
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "", // Empty paragraph for spacing
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "", // Empty paragraph for spacing
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "", // Empty paragraph for spacing
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "Copyright © 2026 S&P Global Inc. All rights reserved.",
+                size: 18,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+    
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "These materials, including any software, data, processing technology, index data, ratings, credit-related analysis, research, model, software or other application or output described herein, or any part thereof (collectively the \"Property\") constitute the proprietary and confidential information of S&P Global Inc its affiliates (each and together \"S&P Global\") and/or its third party provider licensors. S&P Global on behalf of itself and its third-party licensors reserves all rights in and to the Property. These materials have been prepared solely for information purposes based upon information generally available to the public and from sources believed to be reliable.",
+                size: 16,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+    
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "THE PROPERTY IS PROVIDED ON AN \"AS IS\" BASIS. NEITHER S&P GLOBAL NOR ANY THIRD PARTY PROVIDERS (TOGETHER, \"S&P GLOBAL PARTIES\") MAKE ANY WARRANTY, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, FREEDOM FROM BUGS, SOFTWARE ERRORS OR DEFECTS, THAT THE PROPERTY\'S FUNCTIONING WILL BE UNINTERRUPTED OR THAT THE PROPERTY WILL OPERATE IN ANY SOFTWARE OR HARDWARE CONFIGURATION, NOR ANY WARRANTIES, EXPRESS OR IMPLIED, AS TO ITS ACCURACY, AVAILABILITY, COMPLETENESS OR TIMELINESS, OR TO THE RESULTS TO BE OBTAINED FROM THE USE OF THE PROPERTY. S&P GLOBAL PARTIES SHALL NOT IN ANY WAY BE LIABLE TO ANY RECIPIENT FOR ANY INACCURACIES, ERRORS OR OMISSIONS REGARDLESS OF THE CAUSE. Without limiting the foregoing, S&P Global Parties shall have no liability whatsoever to any recipient, whether in contract, in tort (including negligence), under warranty, under statute or otherwise, in respect of any loss or damage suffered by any recipient as a result of or in connection with the Property, or any course of action determined, by it or any third party, whether or not based on or relating to the Property.  In no event shall S&P Global be liable to any party for any direct, indirect, incidental, exemplary, compensatory, punitive, special or consequential damages, costs, expenses, legal fees or losses (including without limitation lost income or lost profits and opportunity costs or losses caused by negligence) in connection with any use of the Property even if advised of the possibility of such damages. The Property should not be relied on and is not a substitute for the skill, judgment and experience of the user, its management, employees, advisors and/or clients when making investment and other business decisions.",
+                size: 16,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+    
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "The S&P Global logo is a registered trademark of S&P Global, and the trademarks of S&P Global used within this document or materials are protected by international laws. Any other names may be trademarks of their respective owners.",
+                size: 16,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        spacing: {
+            line: 247,
+            after: 240,
+        },
+    }),
+    
+    new docx.Paragraph({
+        children: [
+            new docx.TextRun({
+                text: "The inclusion of a link to an external website by S&P Global should not be understood to be an endorsement of that website or the website\'s owners (or their products/services).  S&P Global is not responsible for either the content or output of external websites. S&P Global keeps certain activities of its divisions separate from each other in order to preserve the independence and objectivity of their respective activities.  As a result, certain divisions of S&P Global may have information that is not available to other S&P Global divisions.  S&P Global has established policies and procedures to maintain the confidentiality of certain nonpublic information received in connection with each analytical process.  S&P Global may receive compensation for its ratings and certain analyses, normally from issuers or underwriters of securities or from obligors.  S&P Global reserves the right to disseminate its opinions and analyses.  S&P Global Ratings\' public ratings and analyses are made available on its sites, www.spglobal.com/ratings (free of charge) and www.capitaliq.com (subscription), and may be distributed through other means, including via S&P Global publications and third party redistributors.",
+                size: 16,
+                color: "000000",
+                font: "Arial"
+            }),
+        ],
+        style: "Copyright text",
+    }),
+                ],
+            },
+        ],
+    });
+                    
+                    // Generate and download the document
+                    const blob = await docx.Packer.toBlob(doc);
+                    const fileName = `newdocument.docx`;
+                    
+                    // Use FileSaver.js to download
+                    saveAs(blob, fileName);
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Error generating document:', error);
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = `❌ Error: ${error.message}`;
+                } finally {
+                    // Hide loading state
+                    loadingIndicator.style.display = 'none';
+                    generateBtn.disabled = false;
+                }
+            });
+            
+            // Function to parse markdown-like content to docx elements
+            function parseContentToElements(content) {
+                const lines = content.split('\n');
+                const elements = [];
+                let currentList = [];
+                let listType = null;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    
+                    if (line === '') {
+                        // Handle end of lists
+                        if (currentList.length > 0) {
+                            elements.push(...createList(currentList, listType));
+                            currentList = [];
+                            listType = null;
+                        }
+                        continue;
+                    }
+                    
+                    // Handle headings
+                    if (line.startsWith('## ')) {
+                        if (currentList.length > 0) {
+                            elements.push(...createList(currentList, listType));
+                            currentList = [];
+                            listType = null;
+                        }
+                        elements.push(new docx.Paragraph({
+                            text: line.substring(3),
+                            style: "heading1",
+                        }));
+                    } else if (line.startsWith('### ')) {
+                        if (currentList.length > 0) {
+                            elements.push(...createList(currentList, listType));
+                            currentList = [];
+                            listType = null;
+                        }
+                        elements.push(new docx.Paragraph({
+                            text: line.substring(4),
+                            style: "heading2",
+                        }));
+                    } else if (line.startsWith('#### ')) {
+                        if (currentList.length > 0) {
+                            elements.push(...createList(currentList, listType));
+                            currentList = [];
+                            listType = null;
+                        }
+                        elements.push(new docx.Paragraph({
+                            text: line.substring(5),
+                            style: "heading3",
+                        }));
+                    } else if (line.startsWith('• ')) {
+                        // Bullet list item
+                        if (listType !== 'bullet') {
+                            if (currentList.length > 0) {
+                                elements.push(...createList(currentList, listType));
+                            }
+                            currentList = [];
+                            listType = 'bullet';
+                        }
+                        currentList.push(line.substring(2));
+                    } else if (/^\d+\.\s/.test(line)) {
+                        // Numbered list item
+                        if (listType !== 'number') {
+                            if (currentList.length > 0) {
+                                elements.push(...createList(currentList, listType));
+                            }
+                            currentList = [];
+                            listType = 'number';
+                        }
+                        currentList.push(line.replace(/^\d+\.\s/, ''));
+                    } else {
+                        // Regular paragraph
+                        if (currentList.length > 0) {
+                            elements.push(...createList(currentList, listType));
+                            currentList = [];
+                            listType = null;
+                        }
+                        
+                        // Handle bold text
+                        const children = [];
+                        const parts = line.split(/(\*\*.*?\*\*)/);
+                        
+                        for (const part of parts) {
+                            if (part.startsWith('**') && part.endsWith('**')) {
+                                children.push(new docx.TextRun({
+                                    text: part.substring(2, part.length - 2),
+                                    bold: true,
+                                }));
+                            } else if (part) {
+                                children.push(new docx.TextRun({
+                                    text: part,
+                                }));
+                            }
+                        }
+                        
+                        elements.push(new docx.Paragraph({
+                            children: children,
+                            style: "body",
+                        }));
+                    }
+                }
+                
+                // Handle any remaining list
+                if (currentList.length > 0) {
+                    elements.push(...createList(currentList, listType));
+                }
+                
+                return elements;
+            }
+            
+            // Function to create list elements
+            function createList(items, type) {
+                const listElements = [];
+                
+                for (let i = 0; i < items.length; i++) {
+                    const children = [];
+                    const parts = items[i].split(/(\*\*.*?\*\*)/);
+                    
+                    for (const part of parts) {
+                        if (part.startsWith('**') && part.endsWith('**')) {
+                            children.push(new docx.TextRun({
+                                text: part.substring(2, part.length - 2),
+                                bold: true,
+                            }));
+                        } else if (part) {
+                            children.push(new docx.TextRun({
+                                text: part,
+                            }));
+                        }
+                    }
+                    
+                    listElements.push(new docx.Paragraph({
+                        children: children,
+                        style: "body",
+                        bullet: type === 'bullet' ? {
+                            level: 0
+                        } : undefined,
+                        numbering: type === 'number' ? {
+                            reference: "default-numbering",
+                            level: 0
+                        } : undefined,
+                    }));
+                }
+                
+                return listElements;
+            }
+        });
+    </script>
+</body>
+</html>
+----
+step_display_interface:print
+${step_generate_html_interface_output}
