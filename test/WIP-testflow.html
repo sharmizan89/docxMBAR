@@ -695,7 +695,7 @@ The market outlook for Q4 2025 suggests cautious optimism with selective investm
                                             alignment: docx.AlignmentType.LEFT,
                                             style: {
                                                 paragraph: {
-                                                    indent: { hanging: 360 },
+                                                    indent: { left: 0, right: 0, hanging: 360 },
                                                 },
                                             },
                                         },
@@ -735,6 +735,18 @@ The market outlook for Q4 2025 suggests cautious optimism with selective investm
                                     },
                                     titlePage: true,
                                 },
+                                default: new docx.Header({
+                                        children: [
+                                            // Empty header for remaining pages
+                                            new docx.Paragraph({
+                                                text: "",
+                                                spacing: {
+                                                    after: 0,
+                                                    before: 0,
+                                                },
+                                            }),
+                                        ],
+                                    }),
                                 headers: {
                                     first: new docx.Header({
                                         children: [
@@ -750,18 +762,6 @@ The market outlook for Q4 2025 suggests cautious optimism with selective investm
                                                         },
                                                     }),
                                                 ],
-                                                spacing: {
-                                                    after: 640,
-                                                    before: 0,
-                                                },
-                                            }),
-                                        ],
-                                    }),
-                                    default: new docx.Header({
-                                        children: [
-                                            // Empty header for remaining pages
-                                            new docx.Paragraph({
-                                                text: "",
                                                 spacing: {
                                                     after: 0,
                                                     before: 0,
@@ -839,16 +839,31 @@ The market outlook for Q4 2025 suggests cautious optimism with selective investm
                 color: "000000",
                 font: "Arial"
             }),
-            new docx.TextRun({
-                break: {},
-            }),
-            new docx.TextRun({
-                break: {},
-            }),
-            new docx.TextRun({
-                break: {},
-            }),
         ],
+        spacing: {
+            line: 247,
+            after: 0,
+        },
+    }),
+    
+    new docx.Paragraph({
+        text: "",
+        spacing: {
+            line: 247,
+            after: 0,
+        },
+    }),
+    
+    new docx.Paragraph({
+        text: "",
+        spacing: {
+            line: 247,
+            after: 0,
+        },
+    }),
+    
+    new docx.Paragraph({
+        text: "",
         spacing: {
             line: 247,
             after: 240,
